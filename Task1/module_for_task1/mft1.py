@@ -50,24 +50,24 @@ def buildTable1(pivot, f, nodes, RR1, RR2, RR3):  # Строит таблицу 
 
 
 def buildTable2(f, pivot, neighbors, polynom, maximums, errors):  # Строит таблицу 1 по образцу
-    string1 = [i for i in range(4)]
+    string1 = neighbors
 
-    string2 = neighbors
+    string2 = polynom
 
-    string3 = polynom
+    string3 = [f(pivot) - polynom[i] for i in range(4)]
 
-    string4 = [f(pivot) - polynom[i] for i in range(4)]
+    string4 = maximums
 
-    string5 = maximums
+    string5 = errors
 
-    string6 = errors
-
-    return pd.DataFrame([string1, string2, string3, string4, string5, string6],
-                        index=["i", "Узлы интерполирования в порядке их использования",
+    dataframe = pd.DataFrame([string1, string2, string3, string4, string5],
+                        index=[ "Узлы интерполирования в порядке их использования",
                                "$P_{i}($" + str(pivot) + "$) -$ Значение многочлена в точке интерполирования",
                                "$f($" + str(pivot) + "$) {-} P_{i}($" + str(pivot) + "$) -$ Фактическая погрешность",
                                "$M_{i+1} -$ Оценка модуля произодных",
-                               "$R_{i}($" + str(pivot) + "$) -$ Оценка погрешности"], columns=[" "] * 4)
+                               "$R_{i}($" + str(pivot) + "$) -$ Оценка погрешности"], columns=[str(i) for i in range(4)])
+    dataframe.columns.name = "i"
+    return dataframe
 
 
 def interpolating_polynom(f, pivot, neighbors):  # Вычисление многочлена
@@ -120,7 +120,7 @@ def find_estimation_der(list_of_der, pivot, neighbors):  # Ищет оценку
     return maximums
 
 
-def interpolating(f, nodes, pivot, derivatives):  # Итоговая функция, решающая задачу
+def non_equidistant_interpolation(f, nodes, pivot, derivatives):  # Итоговая функция, решающая задачу
     RR1, RR2, RR3 = getRRs(nodes, f)
 
     dataframe1 = buildTable1(pivot, f, nodes, RR1, RR2, RR3)
