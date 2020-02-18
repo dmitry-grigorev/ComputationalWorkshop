@@ -7,13 +7,13 @@ def get_values(f, a, b, h):  # Вычисляет значения функци�
     return [f(a + k * h) for k in range(n)]
 
 
-def buildTable1(f, a, b, h, values):  # Строит таблицу точка-значение
+def buildTable1(a, b, h, values):  # Строит таблицу точка-значение
     n = int((b - a) / h) + 1
     nodes = [(a + k * h) for k in range(n)]
     return pd.DataFrame([nodes, values], index=["x", "f(x)"], columns=[" "] * n).T
 
 
-def get_ERs(f, a, b, values):  # Вычисляет конечные разности
+def get_ERs(values):  # Вычисляет конечные разности
     le = len(values)
     ERs = [0]
     ERs[0] = [values[k + 1] - values[k] for k in range(le - 1)]
@@ -124,9 +124,9 @@ def buildTable3(f, derivatives, pivot, a, b, h, ER0, N, P):  # Строит та
 def equidistant_interpolation(f, pivot, a, b, h, derivatives):
     values = get_values(f, a, b, h)
 
-    dataframe1 = buildTable1(f, a, b, h, values)
+    dataframe1 = buildTable1(a, b, h, values)
 
-    ERs = get_ERs(f, a, b, values)
+    ERs = get_ERs(values)
 
     dataframe2 = buildTable2(a, b, h, values, ERs)
 
