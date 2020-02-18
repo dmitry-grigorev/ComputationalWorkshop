@@ -33,15 +33,15 @@ def index_RR3(i):
 def buildTable1(pivot, f, nodes, RR1, RR2, RR3):  # Строит таблицу 1 по образцу
     column1 = [nodes[i // 2] if i % 2 == 0 else ' ' for i in range(2 * len(nodes) - 1)] + [pivot]
 
-    column2 = [f(nodes[i // 2]) if i % 2 == 0 else ' ' for i in range(2 * len(nodes) - 1)] + ['?']
+    column2 = [round(f(nodes[i // 2]), 5) if i % 2 == 0 else ' ' for i in range(2 * len(nodes) - 1)] + ['?']
 
-    column3 = [RR1[i // 2] if i % 2 == 1 else ' '
+    column3 = [round(RR1[i // 2], 5) if i % 2 == 1 else ' '
                for i in range(2 * len(nodes) - 1)] + [' ']
 
-    column4 = [' '] + [RR2[i // 2] if i % 2 == 1 else ' '
+    column4 = [' '] + [round(RR2[i // 2], 5) if i % 2 == 1 else ' '
                        for i in range(2 * len(nodes) - 3)] + [' '] * 2
 
-    column5 = [' '] * 2 + [RR3[i // 2] if i % 2 == 1 else ' '
+    column5 = [' '] * 2 + [round(RR3[i // 2], 3) if i % 2 == 1 else ' '
                            for i in range(2 * len(nodes) - 5)] + [' '] * 3
 
     return (pd.DataFrame((column1, column2, column3, column4, column5),
@@ -63,11 +63,11 @@ def buildTable2(f, pivot, neighbors, polynom, maximums, errors):  # Строит
     string6 = errors
 
     return pd.DataFrame([string1, string2, string3, string4, string5, string6],
-                        index=["i", "Узлы в порядке интерполирования",
-                               "Значение многочлена в точке интерполирования",
-                               "Фактическая погрешность",
-                               "Оценка модуля произодных",
-                               "Оценка погрешности"], columns=[" "] * 4)
+                        index=["i", "Узлы интерполирования в порядке их использования",
+                               "$P_{i}($" + str(pivot) + "$) -$ Значение многочлена в точке интерполирования",
+                               "$f($" + str(pivot) + "$) {-} P_{i}($" + str(pivot) + "$) -$ Фактическая погрешность",
+                               "$M_{i+1} -$ Оценка модуля произодных",
+                               "$R_{i}($" + str(pivot) + "$) -$ Оценка погрешности"], columns=[" "] * 4)
 
 
 def interpolating_polynom(f, pivot, neighbors):  # Вычисление многочлена
@@ -135,8 +135,8 @@ def interpolating(f, nodes, pivot, derivatives):  # Итоговая функц�
         buf *= abs(pivot - neighbors[k]) / (k + 1)
         errors[k] = maximums[k] * buf
 
-    polynom = interpolating_polynom(f,pivot , neighbors)
+    polynom = interpolating_polynom(f, pivot, neighbors)
 
-    dataframe2 = buildTable2(f,pivot ,neighbors, polynom, maximums, errors)
+    dataframe2 = buildTable2(f, pivot, neighbors, polynom, maximums, errors)
     RRs = [RR1, RR2, RR3]
     return RRs, dataframe1, dataframe2
