@@ -54,7 +54,7 @@ def get_Ns(a, b, h, pivot):  # Вычисляет значения Nk(t)
     return N
 
 
-def get_Pks(a, b, h, pivot, values, N, ERs):            # Вычисляет значения Pk(pivot)
+def get_Pks(a, b, h, pivot, values, N, ERs):  # Вычисляет значения Pk(pivot)
     Pks = [0] * 5
     ER0 = [0] * 5
     if pivot <= a + h / 2:
@@ -114,9 +114,9 @@ def buildTable3(f, derivatives, pivot, a, b, h, ER0, N, P):  # Строит та
     dataframe = pd.DataFrame([string1, string2, string3, string4, string5, string6],
                              index=['$ \Delta^{k} y_{0} $', "$N_{k}(t)$",
                                     "$ N_{k}(t) \cdot \Delta^{k} y_{0} $",
-                                    "$P_{k}($" + str(pivot) + "$)$",
-                                    "$f($" + str(pivot) + "$) {-} P_{k}($" + str(pivot) + "$)$",
-                                    "$|R_{k}($" + str(pivot) + "$)|\le$"], columns=[str(k) for k in range(5)])
+                                    "$P_{0:}({1:})$".format("k", pivot),
+                                    "$f({0:})-P_{1:}({2:})$".format(pivot, "k", pivot),
+                                    "$|R_{0:}({1:})|\le$".format("k", pivot)], columns=[str(k) for k in range(5)])
     dataframe.columns.name = "k"
     return dataframe
 

@@ -62,10 +62,10 @@ def buildTable2(f, pivot, neighbors, polynom, maximums, errors):  # Строит
 
     dataframe = pd.DataFrame([string1, string2, string3, string4, string5],
                         index=[ "Узлы интерполирования в порядке их использования",
-                               "$P_{i}($" + str(pivot) + "$) -$ Значение многочлена в точке интерполирования",
-                               "$f($" + str(pivot) + "$) {-} P_{i}($" + str(pivot) + "$) -$ Фактическая погрешность",
+                               "$P_{0:}({1:}) - $ Значение многочлена в точке интерполирования".format("i",pivot),
+                               "$f({0:}) - P_{1:}({2:}) -$ Фактическая погрешность".format(pivot,"i",pivot),
                                "$M_{i+1} -$ Оценка модуля произодных",
-                               "$R_{i}($" + str(pivot) + "$) -$ Оценка погрешности"], columns=[str(i) for i in range(4)])
+                               "$R_{0:}({1:}) -$ Оценка погрешности".format("i",pivot)], columns=[str(i) for i in range(4)])
     dataframe.columns.name = "i"
     return dataframe
 
