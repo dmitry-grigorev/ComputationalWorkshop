@@ -50,7 +50,7 @@ def buildTable1(pivot, f, nodes, RR1, RR2, RR3):  # Строит таблицу 
 
 
 def buildTable2(f, pivot, neighbors, polynom, maximums, errors):  # Строит таблицу 1 по образцу
-    string1 = neighbors
+    string1 = [round(neighbors[i],3) for i in range(len(neighbors))]
 
     string2 = polynom
 
