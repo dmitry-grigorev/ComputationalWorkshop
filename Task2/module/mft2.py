@@ -1,5 +1,4 @@
-tune_b = 10 ** (-3)  # Настройка метода бисекции
-tune_n = 10 ** (-3)  # Настройка метода Ньютона
+tune = 10 ** (-3)  # Настройка eps
 
 
 class PolLagrange:
@@ -12,7 +11,7 @@ class PolLagrange:
                     val[k] /= (nodes[k] - nodes[l])
         self.f_xk_div_omega_k = val
 
-    def get_value(self, pivot):              # Вычисляем значение в конкретной точке
+    def get_value(self, pivot):  # Вычисляем значение в конкретной точке
         s = 0
         val = self.f_xk_div_omega_k
         for k in range(len(self.nodes)):
@@ -25,21 +24,43 @@ class PolLagrange:
         return s
 
 
-def bisection(polynom, val, a, b, eps):      # Функция, выполняющая метод бисекции
+def bisection(polynom, val, a, b, eps):  # Функция, выполняющая метод бисекции
+    answer = [0]
+    if abs(polynom.get_value(a) - val) < eps * tune:
+        answer.append(a)
+        a = a + eps
+    if abs(polynom.get_value(b) - val) < eps * tune:
+        answer.append(b)
+        b = b - eps
     while b - a >= eps:
         c = (a + b) / 2
         if (polynom.get_value(c) - val) * (polynom.get_value(a) - val) < 0:
+            if (polynom.get_value(c) - val) * (polynom.get_value(b) - val) < 0:
+                answer.append(bisection(polynom, val, c, b, eps))
+            else:
+                if (polynom.get_value(c) - val) * (polynom.get_value((b + c) / 2) - val) < 0:
+                    answer.append(bisection(polynom, val, c, (b + c) / 2, eps))
+                if (polynom.get_value(b) - val) * (polynom.get_value((b + c) / 2) - val) < 0:
+                    answer.append(bisection(polynom, val, (b + c) / 2, b, eps))
             a, b = (a, c)
         else:
+            if (polynom.get_value(c) - val) * (polynom.get_value(a) - val) < 0:
+                answer.append(bisection(polynom, val, a, c, eps))
+            else:
+                if (polynom.get_value(a) - val) * (polynom.get_value((a + c) / 2) - val) < 0:
+                    answer.append(bisection(polynom, val, a, (a + c) / 2, eps))
+                if (polynom.get_value(c) - val) * (polynom.get_value((a + c) / 2) - val) < 0:
+                    answer.append(bisection(polynom, val, (a + c) / 2, c, eps))
             a, b = (c, b)
 
-    return Newtons_method(polynom, a, b, eps * tune_b)
+    return answer.append(Newtons_method(polynom, a, b, val, eps * tune))
 
-def Newtons_method(polynom, a, b, eps):      # Функция, выпоняющая метод Ньютона
+
+def Newtons_method(polynom, a, b, val, eps):  # Функция, выпоняющая метод Ньютона
     imax = 2000  # число итераций, максимальное
     i = 1
     x_n = b
-    h = eps * tune_n
+    h = eps * tune
     f_xn = polynom.get_value(x_n)
     derf_xn = (polynom.get_value(x_n + h) - f_xn) / h
     x_n1 = x_n - f_xn / derf_xn
@@ -50,7 +71,10 @@ def Newtons_method(polynom, a, b, eps):      # Функция, выпоняющ�
             while x_n1 < a or x_n1 > b:
                 x_n1 = (x_n + x_n1) / 2
         if abs(x_n1 - x_n) < eps or i >= imax:
-            return x_n1, i
+            if abs(polynom.get_value(x_n1) - val) < eps:
+                return [x_n1]
+            else:
+                return [0]
         x_n = x_n1
         f_xn = polynom.get_value(x_n)
         derf_xn = (f_xn - polynom.get_value(x_n + h)) / h
