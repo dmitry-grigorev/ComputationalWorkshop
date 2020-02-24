@@ -1,6 +1,10 @@
+tune_b = 10 ** (-3)  # Настройка метода бисекции
+tune_n = 10 ** (-3)  # Настройка метода Ньютона
+
+
 class PolLagrange:
-    def __init__(self, nodes, values):              # Инициализация класса, описывающего интерполяционный
-        self.nodes = nodes                          # многочлен Лагранжа
+    def __init__(self, nodes, values):  # Инициализация класса, описывающего интерполяционный
+        self.nodes = nodes  # многочлен Лагранжа
         val = values
         for k in range(len(nodes)):
             for l in range(len(nodes)):
@@ -29,13 +33,13 @@ def bisection(polynom, val, a, b, eps):      # Функция, выполняю�
         else:
             a, b = (c, b)
 
-    return Newtons_method(polynom, a, b, eps * 10 ** (-3))
+    return Newtons_method(polynom, a, b, eps * tune_b)
 
 def Newtons_method(polynom, a, b, eps):      # Функция, выпоняющая метод Ньютона
     imax = 2000  # число итераций, максимальное
     i = 1
     x_n = b
-    h = eps * 0.01
+    h = eps * tune_n
     f_xn = polynom.get_value(x_n)
     derf_xn = (polynom.get_value(x_n + h) - f_xn) / h
     x_n1 = x_n - f_xn / derf_xn
