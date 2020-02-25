@@ -52,11 +52,11 @@ def bisection(polynom, val, a, b, eps):  # Функция, выполняюща�
                 if (polynom.get_value(c) - val) * (polynom.get_value((a + c) / 2) - val) < 0:
                     answer += bisection(polynom, val, (a + c) / 2, c, eps)
             a, b = (c, b)
-    answer += Newtons_method(polynom, a, b, val, eps * tune)
+    answer += Newtons_method(polynom, a, b, eps * tune)
     return answer
 
 
-def Newtons_method(polynom, a, b, val, eps):  # Функция, выпоняющая метод Ньютона
+def Newtons_method(polynom, a, b, eps):  # Функция, выпоняющая метод Ньютона
     imax = 2000  # число итераций, максимальное
     i = 1
     x_n = (a + b) / 2
