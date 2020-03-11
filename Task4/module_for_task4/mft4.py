@@ -10,13 +10,12 @@ def equidistant_interpolation_Newton(f, pivot, a, b, degree, h):
     N = get_Ns(a, b, degree, h, pivot)
 
     P, ER0 = get_Pks(a, b, degree, h, pivot, values, N, ERs)
-    print(P)
     return P[len(P) - 1]
 
 
 def non_equidistant_interpolation_Newton(f, nodes, pivot, degree):
-    sorted_nodes = (sorted(nodes, key=lambda x: abs(x - pivot)))  # четыре ближайшие точки
-    DDs = get_DDs(f, nodes, degree)
+    sorted_nodes = (sorted(nodes, key=lambda x: abs(x - pivot)))  # узлы в порядке близости к точке интерполяции
+    DDs = get_DDs(f, sorted_nodes, degree)
     value = 0
     buf = 1
     for i in range(degree):
