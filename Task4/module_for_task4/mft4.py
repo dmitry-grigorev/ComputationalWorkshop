@@ -21,7 +21,6 @@ def non_equidistant_interpolation_Newton(f, nodes, pivot, degree):
     for i in range(degree):
         value = value + DDs[i][0] * buf
         buf *= (pivot - sorted_nodes[i])
-
     return value
 
 
