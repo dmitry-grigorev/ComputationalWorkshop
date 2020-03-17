@@ -13,7 +13,7 @@ def derivate_experiment(derivative, f, h, pivot, nodes, df):
     errors.append(df(pivot) - values[1])
     h_s.append(h)
     k = 1
-    while errors[k] - errors[k - 1] < 0:
+    while abs(errors[k]) - abs(errors[k - 1]) < 0:
         h /= 2
         k += 1
         h_s.append(h)
