@@ -40,6 +40,6 @@ def get_table(f, nodes, degree, h, df, d2f):
     return DataFrame([nodes, values_in_nodes, real_val_der1, num_val_der1_1, errors1_1, num_val_der1_2, errors1_2,
                       real_val_der2, num_val_der2, errors2],
                      index=["$x$", "$f(x)$", "$f'(x)$", "$\widetilde {f'}(x), \ O(h)$",
-                            "$погр.,\ O(h)$", "$\widetilde{\widetilde {f'}}(x), \ O(h^2)$",
-                            "$погр., \ O(h^2)$", "$f''(x)$", "$\widetilde {f''}(x),\ O(h^2)$",
-                            "$погр., \ O(h^2)$"], columns=[''] * (degree + 1)).T
+                            "погр., $\ O(h)$", "$\widetilde{\widetilde {f'}}(x), \ O(h^2)$",
+                            "погр., $ \ O(h^2)$", "$f''(x)$", "$\widetilde {f''}(x),\ O(h^2)$",
+                            "погр., $ \ O(h^2)$"], columns=[''] * (degree + 1)).T
