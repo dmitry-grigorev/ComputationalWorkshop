@@ -60,23 +60,14 @@ def triangle_uniform(triangle):
     return [beta1, beta2]
 
 
-# моделирование равномерного дискретного распределения, заданного вероятностями probs
-def discrete_uniform(probs):
-    alpha = np.random.uniform()
-    cumprob = 0
-    k = -1
-    while cumprob < alpha:
-        k += 1
-        cumprob += probs[k]
-    return k
-
-
 # моделирование равномерного распределения в многоугольнике
 def polygon_uniform(triangles, amount):
     areas = np.array([get_area(triangle) for triangle in triangles])
     triangles_probs = areas / np.sum(areas)
-    generated = np.array([triangle_uniform(
-        triangles[discrete_uniform(triangles_probs)]) for _ in range(amount)])
+
+    itriangles = np.random.choice(triangles.shape[0], size=amount, p=triangles_probs)
+
+    generated = np.array([triangle_uniform(triangles[i]) for i in itriangles])
     return generated
 
 
